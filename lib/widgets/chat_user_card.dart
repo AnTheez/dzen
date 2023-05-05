@@ -23,6 +23,7 @@ class _ChatUserCardState extends State<ChatUserCard> {
       child: InkWell(
         onTap: () {},
         child: ListTile(
+          Image.network(src)
 
           //юзер профіль зображення
           leading: const CircleAvatar(child: Icon(CupertinoIcons.person)),
