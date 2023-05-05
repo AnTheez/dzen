@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "753918786589",
+    "project_id": "dzen-chat-384f9",
+    "storage_bucket": "dzen-chat-384f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753918786589:android:401c824d6602af546f1af4",
+        "android_client_info": {
+          "package_name": "com.example.dzen_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753918786589-4fubo02fm70s5rvt1io1ocd33pqg54gr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dzen_chat",
+            "certificate_hash": "f8fe519794a20c93a71437fd189be7da3a2f3e5d"
+          }
+        },
+        {
+          "client_id": "753918786589-727sj4gljhoom5p0dscu92jfoob3iud8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD2hiDLs28rlF87KrQSbg_E4_E8fAIzOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753918786589-727sj4gljhoom5p0dscu92jfoob3iud8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "753918786589-gsec7da16vht1agl8ml2jmlbkv1f2v6u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dzenChat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
