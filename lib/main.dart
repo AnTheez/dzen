@@ -12,18 +12,13 @@ void main() {
 
   //фулл-скрін мод
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
 //надстройкі оринєнтаціїї для портрет режиму
   SystemChrome.setPreferredOrientations(
-    [
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]
-  ).then((value) {
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((value) {
     _initializeFirebase();
     runApp(const MyApp());
   });
-
 }
 
 class MyApp extends StatelessWidget {
@@ -32,23 +27,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ДзеньКіт',
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
+        title: 'ДзеньКіт',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            appBarTheme: const AppBarTheme(
           centerTitle: true,
-        elevation: 1,
-        iconTheme: IconThemeData(color: Colors.black),
+          elevation: 1,
+          iconTheme: IconThemeData(color: Colors.black),
           titleTextStyle: TextStyle(
-            color: Colors.black, fontWeight: FontWeight.normal, fontSize: 19),
-        backgroundColor: Colors.white,
-        )
-      ),
-      home: const SplashScreen());
+              color: Colors.black, fontWeight: FontWeight.normal, fontSize: 19),
+          backgroundColor: Colors.white,
+        )),
+        home: const SplashScreen());
   }
 }
 
 _initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
 }
