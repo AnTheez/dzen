@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,6 +6,7 @@ import '../api/api.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,8 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
        actions: [
         //пошук
         IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
-        //параметри
-        IconButton(onPressed: (){}, icon: const Icon(Icons.more_vert))
+        //параметри профілю
+        IconButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen(user: list[0],)));
+        }, icon: const Icon(Icons.more_vert))
        ],
 
 
