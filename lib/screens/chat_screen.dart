@@ -1,13 +1,12 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/message_card.dart';
 import '../api/api.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
+import '../models/message.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUser user;
@@ -19,6 +18,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+//for storing all msg
+  List<Message> _list = [];
+
+// for hending message text chanels
+  final _textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,53 +33,49 @@ class _ChatScreenState extends State<ChatScreen> {
           flexibleSpace: _appBar(),
         ),
 
-        //boody
+        backgroundColor: const Color.fromARGB(255, 249, 252, 253),
+        //body
         body: Column(
-          
           children: [
             Expanded(
               child: StreamBuilder(
-              stream: APIs.getAllMessages(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  // якшо данні завантажило
-                  case ConnectionState.waiting:
-                  case ConnectionState.none:
-                    return const Center(child: CircularProgressIndicator());
-            
-                  //якшо завантажоло шось - показати це
-                  case ConnectionState.active:
-                  case ConnectionState.done:
-                    final data = snapshot.data?.docs;
-                    log('Data: ${jsonEncode(data![0].data())}');
-                    // _list =
-                    //     data?.map((e) => ChatUser.fromJson(e.data())).toList() ??
-                    //         [];
-            
-                    final _list = ['воу', 'але ні', 'воно ще не працює'];
-            
-                    if (_list.isNotEmpty) {
-                      return ListView.builder(
-                          itemCount:
-                              _list.length,
-                          padding: EdgeInsets.only(top: mq.height * .01),
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                             
-                            return Text('Message: ${_list[index]}');
-                          });
-                    } else {
-                      return const Center(
-                        child: Text('Привітайся першим! 👋',
-                            style: TextStyle(fontSize: 20)),
-                      );
-                    }
-                }
-              },
-                      ),
+                stream: APIs.getAllMessages(widget.user),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    // якшо данні завантажило
+                    case ConnectionState.waiting:
+                    case ConnectionState.none:
+                      return const SizedBox();
+
+                    //якшо завантажоло шось - показати це
+                    case ConnectionState.active:
+                    case ConnectionState.done:
+                      final data = snapshot.data?.docs;
+                      _list = data
+                              ?.map((e) => Message.fromJson(e.data()))
+                              .toList() ??
+                          [];
+
+                      if (_list.isNotEmpty) {
+                        return ListView.builder(
+                            itemCount: _list.length,
+                            padding: EdgeInsets.only(top: mq.height * .01),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return MessageCard(message: _list[index]);
+                            });
+                      } else {
+                        return const Center(
+                          child: Text('Привітайся першим! 👋',
+                              style: TextStyle(fontSize: 20)),
+                        );
+                      }
+                  }
+                },
+              ),
             ),
-            
-            _chatInput()],
+            _chatInput()
+          ],
         ),
       ),
     );
@@ -149,11 +150,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () {},
                       icon: const Icon(Icons.emoji_emotions,
                           color: Colors.blueAccent, size: 25)),
-                  const Expanded(
+                  Expanded(
                       child: TextField(
+                    controller: _textController,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         hintText: 'Шо нового...?',
                         hintStyle: TextStyle(color: Colors.blueAccent),
                         border: InputBorder.none),
@@ -176,7 +178,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
           //send messege btn
           MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              if (_textController.text.isNotEmpty) {
+                //on first message (add user to my_user collection of chat user)
+                APIs.sendMessage(widget.user, _textController.text);
+                _textController.text = '';
+              }
+            },
             minWidth: 0,
             padding:
                 const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
