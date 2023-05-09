@@ -104,7 +104,7 @@ class APIs {
         .update({'image': me.image});
   }
 
-    ///************** Chat Screen Related APIs **************
+  ///************** Chat Screen Related APIs **************
   // chats (collection) --> conversation_id (doc) --> messages (collection) --> message (doc)
 
   // useful for getting conversation id
@@ -137,5 +137,13 @@ class APIs {
     final ref = firestore
         .collection('chats/${getConversationID(chatUser.id)}/messages/');
     await ref.doc(time).set(message.toJson());
+  }
+
+//update read status of message
+  static Future<void> updateMessageReadStatus(Message message) async {
+    firestore
+        .collection('chats/${getConversationID(message.fromId)}/messages/')
+        .doc(message.sent)
+        .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
   }
 }

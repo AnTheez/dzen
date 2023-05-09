@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api/api.dart';
+import '../helper/my_date_util.dart';
 import '../main.dart';
 import '../models/message.dart';
 
@@ -24,6 +25,11 @@ class _MessageCardState extends State<MessageCard> {
 
   // sender or another user message
   Widget _blueMessage() {
+//update last read message if sender and receiver are different
+    if (widget.message.read.isEmpty) {
+      APIs.updateMessageReadStatus(widget.message);
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -49,11 +55,15 @@ class _MessageCardState extends State<MessageCard> {
           ),
         ),
         //
+        //message time
         Padding(
           padding: EdgeInsets.only(right: mq.width * .04),
-          child: Text(widget.message.sent,
-              style: const TextStyle(fontSize: 13, color: Colors.black54)),
-        ),
+          child: Text(
+            MyDateUtil.getFormattedTime(
+                context: context, time: widget.message.sent),
+            style: const TextStyle(fontSize: 13, color: Colors.black54),
+          ),
+        )
       ],
     );
   }
@@ -63,26 +73,28 @@ class _MessageCardState extends State<MessageCard> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-       
         //time
         Row(
           children: [
-             //for adding some space
+            //for adding some space
             SizedBox(width: mq.width * .04),
 
             //double tick blue icon for message read
+            if (widget.message.read.isNotEmpty)
               const Icon(Icons.done_all_rounded, color: Colors.blue, size: 20),
 
             //for adding some space
             const SizedBox(width: 2),
-            //read time
+            //sent time
             Text(
-                '${widget.message.read}12:00',
-                style: const TextStyle(fontSize: 13, color: Colors.black54)),
+              MyDateUtil.getFormattedTime(
+                  context: context, time: widget.message.sent),
+              style: const TextStyle(fontSize: 13, color: Colors.black54),
+            ),
           ],
         ),
 
-         //msg content
+        //msg content
         Flexible(
           child: Container(
             padding: EdgeInsets.all(mq.width * .04),
