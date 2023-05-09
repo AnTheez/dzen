@@ -4,12 +4,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dzen_chat/screens/auth/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../screens/auth/login_screen.dart';
 import '../api/api.dart';
 import '../helper/dialogs.dart';
 import '../main.dart';
@@ -47,14 +48,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // progress dialog
                 Dialogs.showProgressBar(context);
 
-                // sing out from app
+                await APIs.updateActiveStatus(false);
+
+                //sign out from app
                 await APIs.auth.signOut().then((value) async {
                   await GoogleSignIn().signOut().then((value) {
-                    // hidden progress dialog
+                    //for hiding progress dialog
                     Navigator.pop(context);
-                    // for moving to home screen
+
+                    //for moving to home screen
                     Navigator.pop(context);
-                    // replacing home screen with login screen
+
+                    APIs.auth = FirebaseAuth.instance;
+
+                    //replacing home screen with login screen
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (_) => const LoginScreen()));
                   });
@@ -245,8 +252,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
                         // Pick an image.
-                        final XFile? image =
-                            await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+                        final XFile? image = await picker.pickImage(
+                            source: ImageSource.gallery, imageQuality: 80);
                         if (image != null) {
                           log('Image Path: ${image.path} -- MimeType: ${image.mimeType}');
                           setState(() {
@@ -270,8 +277,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
                         // Pick an image.
-                        final XFile? image =
-                            await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
+                        final XFile? image = await picker.pickImage(
+                            source: ImageSource.camera, imageQuality: 80);
                         if (image != null) {
                           log('Image Path: ${image.path}');
                           setState(() {

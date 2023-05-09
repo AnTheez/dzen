@@ -37,18 +37,30 @@ dependencies:
 
   firebase_storage: ^11.1.2
 
+  emoji_picker_flutter: ^1.5.1
+  
+  firebase_messaging: ^14.2.0
+
+  http: ^0.13.5
+
+  # For creating notification channel
+  flutter_notification_channel: ^2.0.0
+
+  # For storing images into gallery
+  gallery_saver: ^2.3.2
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_launcher_icons: "^0.13.1"
 
-# flutter_launcher_icons:
-#   android: "ic_launcher"
-#   ios: true
-#   image_path: "images/icon.png"
-#   min_sdk_android: 21 
-#   remove_alpha_ios: true
+flutter_icons:
+  image_path_android: "images/icon.png"
+  image_path_ios: "images/icon.png"
+  android: true
+  ios: true 
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
